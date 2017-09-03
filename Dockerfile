@@ -10,7 +10,7 @@ ENV DEBIAN_FRONTEND noninteractive
 RUN apt-get update -y
 
 # Install useful packages
-RUN apt-get install -y strace procps tree vim git curl wget gnuplot
+# RUN apt-get install -y strace procps tree vim git curl wget gnuplot
 
 # Install required software
 RUN apt-get install -y git make build-essential libssl-dev

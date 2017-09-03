@@ -10,8 +10,9 @@
 
 ## Difference
 
-  * 1.Support multiple cookies
-  * 2.Run in docker
+  * 1.Support multiple cookies(Ref: scripts/with\_cookie.lua)
+  * 2.Support threadid(Ref: scripts/threadid.lua)
+  * 3.Run in docker
 
 ## Basic Usage
 
