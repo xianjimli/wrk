@@ -7,13 +7,14 @@ request = function()
         ["headers"] = {
         }
     };
-    local content = "{}"
+    -- load saved cookie
     cookie.load(r.headers);
 
-    return wrk.format(r.method, r.path, r.headers, content)
+    return wrk.format(r.method, r.path, r.headers)
 end
 
 response = function(status, headers, body, allheaders)
+    -- save cookie for later use.
     cookie.save(allheaders);
 end
 
