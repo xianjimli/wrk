@@ -111,5 +111,5 @@ vpath %.h   src
 vpath %.lua scripts
 
 docker:
-	docker build . -t zlgcloud/wrk-json
+	docker build --no-cache . -t zlgcloud/wrk-json
 

@@ -58,6 +58,18 @@ static void usage() {
            "  Time arguments may include a time unit (2s, 2m, 2h)\n");
 }
 
+static int threadid(lua_State *L){                /* Internal name of func */
+    char buff[62];
+    pthread_t tid = pthread_self();
+    long int id = *(long int*)&tid;
+
+    snprintf(buff, sizeof(buff), "%ld", id);
+
+    lua_pushstring(L, buff);
+
+    return 1;                              /* One return value */
+}
+
 int main(int argc, char **argv) {
     char *url, **headers = zmalloc(argc * sizeof(char *));
     struct http_parser_url parts = {};
@@ -93,6 +105,9 @@ int main(int argc, char **argv) {
     thread *threads     = zcalloc(cfg.threads * sizeof(thread));
 
     lua_State *L = script_create(cfg.script, url, headers);
+
+    lua_register(L, "threadid", threadid);
+
     if (!script_resolve(L, host, service)) {
         char *msg = strerror(errno);
         fprintf(stderr, "unable to connect to %s:%s %s\n", host, service, msg);
@@ -107,6 +122,8 @@ int main(int argc, char **argv) {
         t->connections = cfg.connections / cfg.threads;
 
         t->L = script_create(cfg.script, url, headers);
+        lua_register(t->L, "threadid", threadid);
+
         script_init(L, t, argc - optind, &argv[optind]);
 
         if (i == 0) {
