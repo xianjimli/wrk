@@ -109,3 +109,6 @@ endif
 vpath %.c   src
 vpath %.h   src
 vpath %.lua scripts
+
+docker:
+	docker build . -t jim/wrkjson

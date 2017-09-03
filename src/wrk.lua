@@ -61,8 +61,17 @@ function wrk.format(method, path, headers, body)
    headers["Content-Length"] = body and string.len(body)
 
    s[1] = string.format("%s %s HTTP/1.1", method, path)
+   
+   -- We allow dup headers by add #index appendix to the key 
+   -- So remove the appendix here:
    for name, value in pairs(headers) do
-      s[#s+1] = string.format("%s: %s", name, value)
+       local index = string.find(name, "#", 1, true)
+       if not index then
+           s[#s+1] = string.format("%s: %s", name, value)
+       else
+           local fixed_name = string.sub(name, 1, index-1);
+           s[#s+1] = string.format("%s: %s", fixed_name, value)
+       end
    end
 
    s[#s+1] = ""
