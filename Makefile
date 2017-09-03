@@ -111,4 +111,5 @@ vpath %.h   src
 vpath %.lua scripts
 
 docker:
-	docker build . -t jim/wrkjson
+	docker build . -t zlgcloud/wrk-json
+

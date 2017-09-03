@@ -514,8 +514,9 @@ static int parse_args(struct config *cfg, char **url, struct http_parser_url *pa
                 cfg->timeout *= 1000;
                 break;
             case 'v':
-                printf("wrk %s [%s] ", VERSION, aeGetApiName());
+                printf("wrk %s [%s] (%s %s)\n", VERSION, aeGetApiName(), __DATE__, __TIME__);
                 printf("Copyright (C) 2012 Will Glozer\n");
+                printf("With multiple cookies supported. build at %s %s\n", __DATE__, __TIME__);
                 break;
             case 'h':
             case '?':
