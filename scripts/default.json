@@ -1,0 +1,8 @@
+[
+  {
+    "path" : "/status",
+    "method": "GET",
+    "headers": {
+    }
+  }
+]

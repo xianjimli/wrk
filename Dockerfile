@@ -22,7 +22,8 @@ WORKDIR /tmp
 RUN git clone https://github.com/xianjimli/wrk.git &&\
     cd wrk &&\
     make &&\
-    mv wrk /usr/local/bin
+    mv wrk /usr/local/bin && \
+    cp -rf scripts /
 
 # Install Luarocks dependencies
 RUN apt-get install -y curl \
