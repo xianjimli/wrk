@@ -10,11 +10,9 @@ URL= #fill url at here
 
 if [[ -z "$JSON" ]]
 then
-  JSON="scripts/default.json"
+  JSON="data/default.json"
 fi
 
-echo docker run --rm $LINK -v `pwd`/scripts:/scripts -v `pwd`/data:/data wrk-json wrk \
-    -c"$C" -t"$T" -d"$D"s -s /$SCRIPT $URL $JSON
-docker run --rm $LINK -v `pwd`/scripts:/scripts -v `pwd`/data:/data wrk-json wrk \
-    -c"$C" -t"$T" -d"$D"s -s /$SCRIPT $URL $JSON
+echo docker run --rm $LINK -v `pwd`/data:/data wrk-json wrk -c"$C" -t"$T" -d"$D"s -s /$SCRIPT $URL $JSON
+docker run --rm $LINK -v `pwd`/data:/data wrk-json wrk -c"$C" -t"$T" -d"$D"s -s /$SCRIPT $URL $JSON
 
