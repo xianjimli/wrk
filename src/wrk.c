@@ -122,7 +122,12 @@ int main(int argc, char **argv) {
         t->connections = cfg.connections / cfg.threads;
 
         t->L = script_create(cfg.script, url, headers);
-        lua_register(t->L, "threadid", threadid);
+        //lua_register(t->L, "thread_id", threadid);
+        lua_pushnumber(t->L, i);
+        lua_setglobal(t->L, "thread_id");
+        
+        lua_pushnumber(t->L, i);
+        lua_setglobal(t->L, "thread_index");
 
         script_init(L, t, argc - optind, &argv[optind]);
 

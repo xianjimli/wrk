@@ -6,7 +6,7 @@
 
 
 request = function()
-   path = "/" .. thread_id
+   path = "/" .. thread_index .."/".. thread_id
    print(path)
    return wrk.format(nil, path)
 end
