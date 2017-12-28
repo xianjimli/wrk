@@ -1,8 +1,16 @@
-[
-  {
-    "path" : "/status",
-    "method": "GET",
-    "headers": {
+{
+  "options": {
+    "debug": true,
+    "showReq": true,
+    "showResp": false,
+    "showStats": true
+  },
+  "requests": [
+    {
+      "path" : "/status",
+      "method": "GET",
+      "headers": {
+      }
     }
-  }
-]
+  ]
+}

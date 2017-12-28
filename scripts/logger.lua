@@ -2,7 +2,12 @@
 local logger = {
 }
 
+function logger.verbose(str) 
+end
+
 function logger.debug(str) 
+  print(str)
+  io.flush()
 end
 
 function logger.warn(str) 

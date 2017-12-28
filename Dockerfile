@@ -19,12 +19,6 @@ RUN apt-get install -y git make build-essential libssl-dev
 # Resource: https://github.com/wg/wrk/wiki/Installing-Wrk-on-Linux
 WORKDIR /tmp
 
-RUN git clone https://github.com/xianjimli/wrk.git &&\
-    cd wrk &&\
-    make &&\
-    mv wrk /usr/local/bin && \
-    cp -rf scripts /
-
 # Install Luarocks dependencies
 RUN apt-get install -y curl \
                        make \
@@ -42,6 +36,12 @@ RUN curl https://keplerproject.github.io/luarocks/releases/luarocks-2.2.2.tar.gz
 
 # Install the cjson package
 RUN luarocks install lua-cjson
+
+RUN git clone https://github.com/xianjimli/wrk.git &&\
+    cd wrk && \
+    make && \
+    mv wrk /usr/local/bin && \
+    cp -rvf scripts /
 
 WORKDIR /
 

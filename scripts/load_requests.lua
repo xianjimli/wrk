@@ -1,5 +1,6 @@
 local cjson = require("cjson")
 local logger = require("scripts/logger")
+local inspect = require("scripts/inspect")
 
 function load_json(filename)
     local data = {}
@@ -10,7 +11,7 @@ function load_json(filename)
         io.close(f)
     else
         logger.error("open file " .. filename .. " failed.")
-        return data 
+        return nil
     end
 
     data = cjson.decode(content)
@@ -19,16 +20,19 @@ function load_json(filename)
 end
 
 function load_requests(filename)
-  local requestList = load_json(filename)
-
-  if #requestList <= 0 then
-      logger.warn("No requestList found\n")
+  local ret = load_json(filename)
+  
+  if ret == nil or #ret.requests <= 0 then
+      logger.warn("No request found, exit\n")
       os.exit(0)
   end
 
-  logger.debug("Found " .. #requestList .. " requestList")
+  if ret.options.debug == true then
+    logger.debug("Found " .. #ret.requests .. " ret")
+    logger.debug(inspect.inspect(ret.options))
+  end
 
-  return requestList
+  return ret
 end
 
 return load_requests;

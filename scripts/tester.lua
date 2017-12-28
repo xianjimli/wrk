@@ -12,11 +12,18 @@ smscode = ""
 eq_nr = 0;
 resp_nr = 0;
 req_index = 1
-request_list = nill 
+request_list = nil
+request_options = nil
+thread_id = 0
 -- globals end
 
 function tester.load_requests(filename)
-  request_list = load_requests(filename)
+  local ret = load_requests(filename)
+  if ret ~= nill then
+    request_list = ret.requests
+    request_options = ret.options
+
+  end
 end
 
 function tester.setup(thread)
@@ -27,8 +34,7 @@ function tester.init(args)
   req_nr  = 0 
   resp_nr = 0 
   filename = args[1]
-
-  logger.debug(string.format("tid=%d load json %s\n", thread_id, filename));
+  logger.verbose(string.format("tid=%d load json %s\n", thread_id, filename));
   tester.load_requests(filename)
 end
 
@@ -38,7 +44,10 @@ function tester.done(summary, latency, requests)
     local req_nr  = thread:get("req_nr") or 0
     local resp_nr = thread:get("resp_nr") or 0
     local msg = "thread %d made %d requests and got %d responses"
-    logger.debug(msg:format(id, req_nr, resp_nr))
+
+    if request_options.showStats == true then
+      logger.debug(msg:format(id, req_nr, resp_nr))
+    end
    end 
 end
 
@@ -80,7 +89,10 @@ tester.request = function()
   req_nr = req_nr + 1
   req_index = req_index + 1
   local str = wrk.format(r.method, path, r.headers, content)
-  logger.debug(str)
+
+  if request_options.showReq == true then
+    logger.debug(str)
+  end
 
   logger.progress()
 
@@ -96,10 +108,14 @@ tester.response = function(status, headers, body, allheaders)
   end
   
   cookie.save(allheaders);
-
   resp_nr = resp_nr + 1
-  if status >= 400 then
-    logger.warn(status, body)
+
+  if request_options.showResp == true then
+    logger.debug(status .. body)
+  else
+    if status >= 400 then
+      logger.warn(status .. body)
+    end
   end
 end
 
