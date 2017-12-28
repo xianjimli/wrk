@@ -65,8 +65,12 @@ tester.request = function()
   local content = ""; 
   local tid = thread_id
   if req_index > #request_list then
-    wrk.thread:stop()
-    return nil
+    if request_options.loop == true then
+      req_index = 1
+    else
+      wrk.thread:stop()
+      return nil
+    end
   end
 
   local r = prepare_request(request_list[req_index])
@@ -100,7 +104,14 @@ tester.request = function()
 end
 
 tester.response = function(status, headers, body, allheaders)
+  local tid = thread_id
   local r = request_list[req_index-1]
+  
+  local vars = {
+    smscode = smscode,
+    tid = string.format("%06d", tid), 
+    index = string.format("%06d", req_index-1)
+  }
 
   if r.saveSmsCode then
     local json = cjson.decode(body)
@@ -110,11 +121,17 @@ tester.response = function(status, headers, body, allheaders)
   cookie.save(allheaders);
   resp_nr = resp_nr + 1
 
+  local content = ""
+  local path,_ = expand(r.path, vars);    
+  if r.body then
+    content,_ = expand(cjson.encode(r.body), vars)
+  end
+
   if request_options.showResp == true then
-    logger.debug("\n" .. status .. body)
+    logger.debug("\nResp: status=" .. status .. " " .. r.method .. " " .. path .. "\n" .. content .. "\n" .. body)
   else
     if status >= 400 then
-      logger.warn("\nXXX:" .. status .. body)
+      logger.warn("\nXXX: status=" .. status .. " " .. r.method .. " " .. path .. "\n" .. content .. "\n" .. body)
     end
   end
 end

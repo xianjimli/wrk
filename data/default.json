@@ -1,8 +1,9 @@
 {
   "options": {
-    "debug": true,
-    "showReq": true,
-    "showResp": false
+    "debug": false,
+    "loop": false,
+    "showReq": false,
+    "showResp": false 
   },
   "requests": [
     {

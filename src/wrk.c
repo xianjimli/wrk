@@ -159,6 +159,7 @@ int main(int argc, char **argv) {
     char *time = format_time_s(cfg.duration);
     printf("Running %s test @ %s\n", time, url);
     printf("  %"PRIu64" threads and %"PRIu64" connections\n", cfg.threads, cfg.connections);
+    fflush(stdout);
 
     uint64_t start    = time_us();
     uint64_t complete = 0;
@@ -192,6 +193,8 @@ int main(int argc, char **argv) {
         stats_correct(statistics.latency, interval);
     }
 
+    fflush(stdout);
+    printf("\n#####################################################\n");
     print_stats_header();
     print_stats("Latency", statistics.latency, format_time_us);
     print_stats("Req/Sec", statistics.requests, format_metric);
@@ -217,6 +220,8 @@ int main(int argc, char **argv) {
         script_errors(L, &errors);
         script_done(L, statistics.latency, statistics.requests);
     }
+    printf("#####################################################\n");
+    fflush(stdout);
 
     return 0;
 }
