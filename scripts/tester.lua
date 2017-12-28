@@ -90,9 +90,9 @@ tester.request = function()
 
   if request_options.showReq == true then
     logger.debug(str)
+  else
+    logger.progress()
   end
-
-  logger.progress()
 
   return str;
 end
@@ -109,10 +109,10 @@ tester.response = function(status, headers, body, allheaders)
   resp_nr = resp_nr + 1
 
   if request_options.showResp == true then
-    logger.debug(status .. body)
+    logger.debug("\n" .. status .. body)
   else
     if status >= 400 then
-      logger.warn(status .. body)
+      logger.warn("\nXXX:" .. status .. body)
     end
   end
 end
