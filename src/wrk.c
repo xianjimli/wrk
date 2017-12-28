@@ -114,6 +114,11 @@ int main(int argc, char **argv) {
         exit(1);
     }
 
+    char *time = format_time_s(cfg.duration);
+    printf("Running %s test @ %s\n", time, url);
+    printf("  %"PRIu64" threads and %"PRIu64" connections\n", cfg.threads, cfg.connections);
+    fflush(stdout);
+
     cfg.host = host;
 
     for (uint64_t i = 0; i < cfg.threads; i++) {
@@ -155,11 +160,6 @@ int main(int argc, char **argv) {
     };
     sigfillset(&sa.sa_mask);
     sigaction(SIGINT, &sa, NULL);
-
-    char *time = format_time_s(cfg.duration);
-    printf("Running %s test @ %s\n", time, url);
-    printf("  %"PRIu64" threads and %"PRIu64" connections\n", cfg.threads, cfg.connections);
-    fflush(stdout);
 
     uint64_t start    = time_us();
     uint64_t complete = 0;
