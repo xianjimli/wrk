@@ -45,9 +45,7 @@ function tester.done(summary, latency, requests)
     local resp_nr = thread:get("resp_nr") or 0
     local msg = "thread %d made %d requests and got %d responses"
 
-    if request_options.showStats == true then
-      logger.debug(msg:format(id, req_nr, resp_nr))
-    end
+    logger.debug(msg:format(id, req_nr, resp_nr))
    end 
 end
 

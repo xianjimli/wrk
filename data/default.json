@@ -2,8 +2,7 @@
   "options": {
     "debug": true,
     "showReq": true,
-    "showResp": false,
-    "showStats": true
+    "showResp": false
   },
   "requests": [
     {
