@@ -71,7 +71,9 @@ tester.request = function()
 
   local r = prepare_request(request_list[req_index])
 
-  logger.debug(string.format("tid=%d req_index=%d\n", tid, req_index))
+  if request_options.showReq == true then
+    logger.debug(string.format("\ntid=%d req_index=%d\n", tid, req_index))
+  end
 
   local vars = {
     smscode = smscode,
