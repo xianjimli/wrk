@@ -4,6 +4,8 @@
 #include "script.h"
 #include "main.h"
 
+static const char* show_perror = NULL;
+
 static struct config {
     uint64_t connections;
     uint64_t duration;
@@ -83,6 +85,11 @@ int main(int argc, char **argv) {
     char *host    = copy_url_part(url, &parts, UF_HOST);
     char *port    = copy_url_part(url, &parts, UF_PORT);
     char *service = port ? port : schema;
+
+    show_perror = getenv("show_perror");
+    if(show_perror) {
+      printf("show_perror on\n");
+    }
 
     if (!strncmp("https", schema, 5)) {
         if ((cfg.ctx = ssl_init()) == NULL) {
@@ -285,6 +292,7 @@ static int connect_socket(thread *thread, connection *c) {
     }
 
   error:
+    if(show_perror) perror("connect:");
     thread->errors.connect++;
     close(fd);
     return -1;
@@ -446,6 +454,7 @@ static void socket_writeable(aeEventLoop *loop, int fd, void *data, int mask) {
     return;
 
   error:
+    if(show_perror) perror("write:");
     thread->errors.write++;
     reconnect_socket(thread, c);
 }
@@ -470,6 +479,7 @@ static void socket_readable(aeEventLoop *loop, int fd, void *data, int mask) {
     return;
 
   error:
+    if(show_perror) perror("read:");
     c->thread->errors.read++;
     reconnect_socket(c->thread, c);
 }
