@@ -111,6 +111,10 @@ vpath %.h   src
 vpath %.lua scripts
 
 docker:
-	docker build --no-cache . -t zlgcloud/wrk-json
-
+	docker build --no-cache . -t wrk-json
+install-wrk:
+	mkdir -p /usr/local/wrk/
+	cp -rfv wrk /usr/local/bin/wrk-json
+	cp -rfv wrk_run.sh /usr/local/bin/
+	cp -rf scripts /usr/local/wrk/
 

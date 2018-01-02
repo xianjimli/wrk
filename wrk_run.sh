@@ -1,18 +1,22 @@
 #!/bin/bash
 
-C=1000 #connections
-T=1000 #Thread
+C=5000 #connections
+T=5000 #Thread
 D=100 #Duration
-JSON=$1
+
+URL=$1
+JSON=$2
 SCRIPT=scripts/run.lua
-LINK="-v /etc/hosts:/etc/hosts"
-URL= #fill url at here
 
 if [[ -z "$JSON" ]]
 then
-  JSON="data/default.json"
+  JSON="data/status.json"
 fi
 
-echo docker run --rm $LINK -v `pwd`/data:/data wrk-json wrk -c"$C" -t"$T" -d"$D"s -s /$SCRIPT $URL $JSON
-docker run --rm $LINK -v `pwd`/data:/data wrk-json wrk -c"$C" -t"$T" -d"$D"s -s /$SCRIPT $URL $JSON
-
+if [[ -z "$URL" ]]
+then
+  URL="https://www.zlgcloud.com"
+fi
+ulimit -n 10240
+export LUA_PATH=/usr/local/wrk/?.lua
+wrk-json -c"$C" -t"$T" -d"$D"s -s /usr/local/wrk/$SCRIPT $URL $JSON
